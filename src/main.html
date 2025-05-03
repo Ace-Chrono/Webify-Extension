@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <link href="main.css" rel="stylesheet" type="text/css" />
+  </head>
+  <body>
+    <script type="module" src="main.js"></script>
+    <div id="extensionContainer">
+      <div id = "editingFeaturesContainer">
+        <div class = "title">Webify</div>
+        <div id="colorWheelContainer">
+          <img id = "colorWheelImage" src="assets/Gradient_color_wheel.png" >
+        </div>
+        <div class="threeColRow">
+          <div id ="invertButton" class="noMarginButton">Invert</div>
+          <div id = "advancedButton" class="noMarginButton">Advanced</div>
+          <div id = "resetButton" class="noMarginButton">Reset</div>
+        </div>
+        <div id= "fontContainer" class = "threeColRow">
+          <div class="fontButton">
+            <p style="font-family: 'Arial', sans-serif; margin: 0">Aa</p>
+          </div>
+          <div class="fontButton">
+            <p style="font-family: 'Verdana', sans-serif; margin: 0">Aa</p>
+          </div>
+          <div class="fontButton">
+            <p style="font-family: 'Tahoma', sans-serif; margin: 0">Aa</p>
+          </div>
+          <div class="fontButton">
+            <p style="font-family: 'Trebuchet MS', sans-serif; margin: 0">Aa</p>
+          </div>
+          <div class="fontButton">
+            <p style="font-family: 'Times New Roman', serif; margin: 0">Aa</p>
+          </div>
+          <div class="fontButton">
+            <p style="font-family: 'Georgia', serif; margin: 0">Aa</p>
+          </div>
+          <div class="fontButton">
+            <p style="font-family: 'Garamond', serif; margin: 0">Aa</p>
+          </div>
+          <div class="fontButton">
+            <p style="font-family: 'Courier New', monospace; margin: 0">Aa</p>
+          </div>
+          <div class="fontButton">
+            <p style="font-family: 'Brush Script MT', cursive; margin: 0">Aa</p>
+          </div>
+        </div>
+        <div id = "sizeButton" class="button">Size</div>
+        <div id = "caseButton" class="button">Case</div>
+        <div id = "zapButton" class="button">Zap</div>
+        <div id= "codeButton" class="button">Code</div>
+        <div id = "shareButton" class="button">Share</div>
+        <div id = "log">Nothing</div>
+      </div>
+      <div id = "presetfeaturesContainer">
+        <div class = "twoColRow">
+          <input type = "file" id = "fileUploader" accept=".json">
+          <div id = "loadButton" class = "button">Load</div>
+        </div>
+        <div class = "twoColRow">
+          <div id = "presetNameContainer">
+            <label id = "presetNameLabel">Preset Name</label><br>
+            <input type = "text" id ="presetNameField"></input>
+          </div>
+          <div id = "saveButton" class = "button">Save</div>
+        </div>
+        
+        <div id = "presetList">
+          <div class = "title">User Presets</div>
+          <div id = "clearButton" class = "button">Clear</div>
+          <ul id = "presetItems"></ul>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

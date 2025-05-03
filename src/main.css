@@ -1,0 +1,134 @@
+#extensionContainer {
+    width: 780px;
+    height: 560px;
+    color: #314d3e;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+}
+
+#editingFeaturesContainer {
+    background-color: gainsboro;
+    width: 250px;
+}
+
+#colorWheelContainer {
+    width: 200px;
+    height: 200px;
+    border-radius: 50%;
+    margin: 0 auto;
+}
+
+#colorWheelImage {
+    height: 200px;
+    width: 200px; 
+}
+
+#fontContainer {
+    border: 1px solid black;
+    text-align: center;
+}
+
+.fontButton {
+    padding: 0px;
+    margin: 0px;
+}
+
+#log {
+    text-align: center;
+    margin-top: auto;
+    bottom: 0;
+}
+
+#presetfeaturesContainer {
+    background-color: gainsboro;
+    width: 530px;
+}
+
+#fileUploader {
+    margin: 10px;
+    width: auto;
+}
+
+#presetNameContainer {
+    margin-left: 10px;
+}
+
+#presetNameField {
+    width: 240px; 
+}
+
+#presetList {
+    border: 1px solid black;
+    height: 450px;
+    overflow-y: auto; 
+    margin: 10px; 
+}
+
+#presetItems {
+    border: 1px solid black;
+}
+
+.preset {
+    list-style-type: none;
+    text-align: center;
+}
+
+.presetContainer {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-gap: 10px;
+    margin: 10px;
+}
+
+.presetText {
+    text-align: center;
+    justify-self: start;
+}
+
+.deleteButton {
+    border: 1px solid black;
+    width: 100px;
+    justify-self: end;
+}
+
+.onOffSwitch {
+    justify-self: end;
+}
+
+/*Non-specific classes*/
+.title {
+    text-align: center;
+    color: black;
+    font-family: Arial, sans-serif;
+    font-size: 24px;
+}
+
+.threeColRow {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-gap: 10px;
+    margin: 10px;
+}
+
+.twoColRow {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    grid-gap: 10px;
+}
+
+.noMarginButton {
+    padding: 5px;
+    border: 1px solid black;
+    text-align: center;
+    margin: 0px;
+    width: auto;
+}
+
+.button {
+    padding: 5px;
+    border: 1px solid black;
+    text-align: center;
+    margin: 10px;
+    width: auto;
+}

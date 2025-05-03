@@ -1,0 +1,85 @@
+{
+    "name": "webify",
+    "description": "Edit Internet Experience",
+    "version": "0.0.1",
+    "homepage": "http://chrome.google.com/webstore",
+    "author": "ENTER YOUR NAME HERE",
+    "repository": {
+        "type": "git",
+        "url": "ENTER GIT REPO URL"
+    },
+    "scripts": {
+        "start": "xt-build -e dev -w",
+        "start:firefox": "xt-build -e dev -p firefox -w",
+        "build": "xt-build -e prod",
+        "build:firefox": "xt-build -e prod -p firefox",
+        "clean": "xt-clean",
+        "docs": "xt-docs",
+        "test": "xt-test",
+        "coverage": "nyc --reporter=lcov npm run test",
+        "sync": "xt-sync"
+    },
+    "babel": {
+        "presets": [
+            "@babel/preset-env"
+        ]
+    },
+    "eslintIgnore": [
+        "test/**/*"
+    ],
+    "devDependencies": {
+        "extension-cli": "latest"
+    },
+    "xtdocs": {
+        "source": {
+            "include": [
+                "README.md",
+                "src"
+            ]
+        }
+    },
+    "xtbuild": {
+        "manifest": "./src/manifest.json",
+        "js_bundles": [
+            {
+                "name": "background",
+                "src": "./src/background.js"
+            },
+            {
+                "name": "main",
+                "src": "./src/main.js"
+            },
+            {
+                "name": "advanced",
+                "src": "./src/advanced.js"
+            },
+            {
+                "name": "code",
+                "src": "./src/code.js"
+            },
+            {
+                "name": "styles",
+                "src": "./src/styles.js"
+            }
+        ],
+        "scss": "./src/**/*.css",
+        "scss_bundles": [
+            {
+                "name": "main",
+                "src": "./src/main.css"
+            },
+            {
+                "name": "code",
+                "src": "./src/code.css"
+            },
+            {
+                "name": "styles",
+                "src": "./src/styles.css"
+            }
+        ]
+    },
+    "dependencies": {
+        "@codemirror/lang-css": "^6.3.1",
+        "codemirror": "^6.0.1"
+    }
+}
