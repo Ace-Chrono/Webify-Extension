@@ -1,6 +1,6 @@
 # Webify
 
-Edit Internet Experience
+Edit your personal internet experience
 
 ## Development 
 
