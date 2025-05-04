@@ -275,16 +275,16 @@ let userPresets = [];
 let presetMap = {};
 let presetData = null;
 
-let currentUserBackgroundColors = null;
-let newUserBackgroundColors = null;
 let elementsWithText = [];
+
+let currentUserBackgroundColors = null;
 let currentFont = null; 
 let currentContrast = 100;
 let currentBrightness = 100;
 let currentSaturation = 100;
 let zoomedIn = false; 
 let currentCase = "normal"; 
-let loadedData = null;
+let currentCSSChanges = ""; 
 
 function handlePresetsUpdate() {
     chrome.storage.onChanged.addListener((changes, areaName) => {
@@ -322,17 +322,24 @@ function applyPreset(presetData) {
         changeFont(presetData.currentFont);
         changeSize(!presetData.zoomedIn);
         changeCase(presetData.currentCase, false);
+        injectCSS(presetData.currentCSSChanges);
+
+        for (let i = 0; i < presetData.zappedElementsID.length; i++) {
+            const identifier = presetData.zappedElementsID[i];
+            if (identifier.startsWith('ID: ')) {
+                const id = identifier.replace('ID: ', '');
+                const el = document.getElementById(id);
+                zappedElements.push({ element: el, displayStyle: el.style.display});
+                el.style.display = 'none'
+            }
+        }
     }
 }
 
 function resetPreset() {
-    for (let i = 0; zappedElements.length; i++) {
-        zappedElements[i].element.style.display = zappedElements[i].displayStyle;
-    }
-
     changeBackgroundColor(initialBackgroundColors);
-    changeFont(null);
     changeAdvancedSettings(100,100,100);
+    changeFont(null);
     changeSize(true);
 
     if (currentCase !== 'normal') {
@@ -340,6 +347,15 @@ function resetPreset() {
             elementsWithText[i].style.textTransform = 'none';
         }
         currentCase = 'normal';
+    }
+
+    for (let i = 0; i < zappedElements.length; i++) {
+        zappedElements[i].element.style.display = zappedElements[i].displayStyle;
+    }
+
+    const styleElement = document.getElementById('injectedCSS');
+    if (styleElement) {
+        styleElement.remove();
     }
 }
 
@@ -357,7 +373,8 @@ function createPreset(presetName) {
         currentFont,
         zoomedIn,
         currentCase,
-        zappedElementsID
+        zappedElementsID,
+        currentCSSChanges
     }
 
     return newPreset; 
@@ -467,6 +484,18 @@ function zap() {
             document.removeEventListener('click', zapElement);
         }
 }
+
+function injectCSS(cssChanges) {
+    currentCSSChanges = cssChanges
+
+    let styleElement = document.getElementById('injectedCSS');
+    if (!styleElement) {
+        styleElement = document.createElement('style');
+        styleElement.id = 'injectedCSS';
+        document.head.appendChild(styleElement);
+    }
+    styleElement.textContent = currentCSSChanges;
+}
 //____________________________________________________________________________________________________
 
 //Main code section
@@ -573,6 +602,8 @@ function resetNoChangeTimer() {
 }
 
 //____________________________________________________________________________________________________
+let newUserBackgroundColors = null;
+let loadedData = null;
 
 chrome.runtime.onMessage.addListener(function(message, sender, sendResponse) { //Checks for any edits to the page made by the user and applies them
     /*if (message.action === 'storeTabId') { //Gets the Id of the current tab and stores it in the local chrome storage
@@ -611,19 +642,28 @@ chrome.runtime.onMessage.addListener(function(message, sender, sendResponse) { /
         zap();
     }
     if (message.action === "injectCSS") { //Injects any css code written by the user into the tab
-        console.log(message.css);
         if (message.css) {
-            let styleElement = document.getElementById('injectedCSS');
-            if (!styleElement) {
-                styleElement = document.createElement('style');
-                styleElement.id = 'injectedCSS';
-                document.head.appendChild(styleElement);
-            }
-            styleElement.textContent = message.css;
+            injectCSS(message.css);
         }
     }
     if (message.action === 'share') { //Saves changes by the user to create a website profile
-        createPreset("Test_Preset");
+        const presetName = "test";
+        const websiteURL = window.location.origin;
+        const isActive = true; 
+        const settings = {
+            presetName,
+            websiteURL,
+            isActive,
+            currentUserBackgroundColors,
+            currentContrast,
+            currentBrightness,
+            currentSaturation,
+            currentFont,
+            zoomedIn,
+            currentCase,
+            zappedElementsID,
+            currentCSSChanges
+        }
         const blob = new Blob([JSON.stringify(settings, null, 2)], { type: "application/json" });
         const url = URL.createObjectURL(blob);
         const link = document.createElement("a");
