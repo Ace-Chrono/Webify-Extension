@@ -47,15 +47,15 @@
             },
             {
                 "name": "main",
-                "src": "./src/main.js"
+                "src": "./src/popup/main.js"
             },
             {
                 "name": "advanced",
-                "src": "./src/advanced.js"
+                "src": "./src/popup/advanced/advanced.js"
             },
             {
                 "name": "code",
-                "src": "./src/code.js"
+                "src": "./src/popup/code/code.js"
             },
             {
                 "name": "styles",
@@ -66,11 +66,11 @@
         "scss_bundles": [
             {
                 "name": "main",
-                "src": "./src/main.css"
+                "src": "./src/popup/main.css"
             },
             {
                 "name": "code",
-                "src": "./src/code.css"
+                "src": "./src/popup/code/code.css"
             },
             {
                 "name": "styles",
