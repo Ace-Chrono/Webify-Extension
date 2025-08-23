@@ -67,6 +67,11 @@ function applyPreset(presetData) {
 }
 
 export function resetPreset() {
+    const styleElement = document.getElementById('injectedCSS');
+    if (styleElement) {
+        styleElement.remove();
+    }
+
     const initialBackgroundColors = globalState.getInitialBackgroundColors(); 
     console.log(initialBackgroundColors)
     changeBackgroundColor(initialBackgroundColors);
@@ -91,11 +96,6 @@ export function resetPreset() {
     }
 
     zapState.setElements(zappedElements);
-
-    const styleElement = document.getElementById('injectedCSS');
-    if (styleElement) {
-        styleElement.remove();
-    }
 }
 
 export function createPreset(presetName) {
