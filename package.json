@@ -59,7 +59,31 @@
             },
             {
                 "name": "styles",
-                "src": "./src/styles.js"
+                "src": "./src/page/styles.js"
+            },
+            {
+                "name": "colorUtils",
+                "src": "./src/page/siteMods/colorUtils.js"
+            },
+            {
+                "name": "listeners",
+                "src": "./src/page/siteMods/listeners.js"
+            },
+            {
+                "name": "presets",
+                "src": "./src/page/siteMods/presets.js"
+            },
+            {
+                "name": "settings",
+                "src": "./src/page/siteMods/settings.js"
+            },
+            {
+                "name": "state",
+                "src": "./src/page/siteMods/state.js"
+            },
+            {
+                "name": "zapMode",
+                "src": "./src/page/siteMods/zapMode.js"
             }
         ],
         "scss": "./src/**/*.css",
@@ -74,7 +98,7 @@
             },
             {
                 "name": "styles",
-                "src": "./src/styles.css"
+                "src": "./src/page/styles.css"
             }
         ]
     },
