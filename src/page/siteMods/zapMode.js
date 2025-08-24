@@ -13,13 +13,13 @@ export function zap() {
     }
 }
 
-function zapElement(event) { //Removes an element from the tab
+function zapElement(event) {
     if (zapState.getZapMode()) {
         removeHighlight(event);
         document.removeEventListener('mouseover', highlightElement);
         document.removeEventListener('mouseout', removeHighlight);
         document.removeEventListener('click', zapElement);
-        zapState.setZapMode(false); // Stop zapping after one element
+        zapState.setZapMode(false);
         zapState.addElement({ element: event.target, displayStyle: event.target.style.display});
         let identifier;
         if (event.target.id) {
@@ -34,10 +34,7 @@ function zapElement(event) { //Removes an element from the tab
     }
 }
 
-//zapElement Helper Functions
-//____________________________________________________________________________________________________
-
-function highlightElement(event) { //Creates a red highlight around the element being hovered over by the cursor
+function highlightElement(event) {
     if (zapState.getZapMode()) {
         const lastEl = zapState.getLastHighlighted();
         const originalStyle = zapState.getOriginalStyle();
@@ -59,7 +56,7 @@ function highlightElement(event) { //Creates a red highlight around the element 
     }
 }
 
-function removeHighlight() { //Removes the highlighting if you are not in the Zap mode
+function removeHighlight() {
     if (zapState.getZapMode() && zapState.getLastHighlighted()) {
         const lastEl = zapState.getLastHighlighted();
         const originalStyle = zapState.getOriginalStyle();

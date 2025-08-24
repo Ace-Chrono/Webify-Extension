@@ -8,11 +8,8 @@ let newUserBackgroundColors = null;
 let loadedData = null;
 
 export function handleUserChanges() {
-    chrome.runtime.onMessage.addListener(function(message) { //Checks for any edits to the page made by the user and applies them
-        /*if (message.action === 'storeTabId') { //Gets the Id of the current tab and stores it in the local chrome storage
-            chrome.storage.local.set({ activeTabId: sender.tab.id });
-        }*/
-        if (message.action === 'changeColor') { //Changes the background color of the tab
+    chrome.runtime.onMessage.addListener(function(message) {
+        if (message.action === 'changeColor') {
             newUserBackgroundColors = [
                 darkenColor(message.color, 40), 
                 darkenColor(message.color, 20), 
@@ -20,7 +17,7 @@ export function handleUserChanges() {
             ];
             changeBackgroundColor(newUserBackgroundColors);
         }
-        if (message.action === 'invertColor') { //Inverts the brightness of the background color of the tab
+        if (message.action === 'invertColor') {
             const currentColors = uiState.getBackgroundColors();
             newUserBackgroundColors = [
                 invertColor(currentColors[0]),
@@ -29,13 +26,13 @@ export function handleUserChanges() {
             ];
             changeBackgroundColor(newUserBackgroundColors);
         }
-        if (message.action === 'reset') { //Resets and color changes made by the user
+        if (message.action === 'reset') {
             resetPreset();
         }
-        if (message.action === 'changeFont') { //Changes the font of all the text in the tab
+        if (message.action === 'changeFont') {
             changeFont(message.font);
         }
-        if (message.action === 'changeContrast') { //Changes the contrast of the tab
+        if (message.action === 'changeContrast') {
             changeAdvancedSettings(
                 message.amount, 
                 uiState.getBrightness(),
@@ -43,7 +40,7 @@ export function handleUserChanges() {
             );
             uiState.setContrast(message.amount);
         }
-        if (message.action === 'changeBrightness') { //Changes the brightness of the tab
+        if (message.action === 'changeBrightness') {
             changeAdvancedSettings(
                 uiState.getContrast(),
                 message.amount,
@@ -51,7 +48,7 @@ export function handleUserChanges() {
             );
             uiState.setBrightness(message.amount);
         }
-        if (message.action === 'changeSaturation') { //Changes the saturation of the tab
+        if (message.action === 'changeSaturation') {
             changeAdvancedSettings(
                 uiState.getContrast(),
                 uiState.getBrightness(),
@@ -59,21 +56,21 @@ export function handleUserChanges() {
             );
             uiState.setSaturation(message.amount);
         }
-        if (message.action === 'changeSize') { //Changes how zoomed in the document is
+        if (message.action === 'changeSize') {
             changeSize(uiState.getZoomedIn());
         }
-        if (message.action === 'changeCase') { //Changes the case of all the text in the tab
+        if (message.action === 'changeCase') {
             changeCase(uiState.getTextCase(), true);
         }
-        if (message.action === 'zap') { //Allows the user to enable zap mode to remove elements from the tab
+        if (message.action === 'zap') {
             zap();
         }
-        if (message.action === "injectCSS") { //Injects any css code written by the user into the tab
+        if (message.action === "injectCSS") {
             if (message.css) {
                 injectCSS(message.css);
             }
         }
-        if (message.action === 'share') { //Saves changes by the user to create a website profile
+        if (message.action === 'share') {
             const presetName = "test";
             const websiteURL = window.location.origin;
             const isActive = true; 
@@ -114,6 +111,3 @@ export function handleUserChanges() {
         }
     });
 }
-
-
-//____________________________________________________________________________________________________

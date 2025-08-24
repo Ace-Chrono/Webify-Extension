@@ -1,69 +1,61 @@
 import { extractColorsCategorized } from "./siteMods/colorUtils";
 import { handlePresetsUpdate, getPresets } from "./siteMods/presets";
 import { globalState, uiState } from "./siteMods/state";
-import "./siteMods/listeners.js";
 import { handleUserChanges } from "./siteMods/listeners.js";
 
-let currentCategorizedColors = null; 
-let currentBackgroundColors = null; 
-let newCategorizedColors = null;
-let newBackgroundColors = null;
-let currentUrl = null; 
-let noChangeTimer = null;
-let initialRunCompleted = false;
+let categorizedColors = null; 
+let backgroundColors = null; 
+let currentUrl = window.location.href; 
 
 window.onload = function () {
-    initializeGlobalState();
-    setInterval(checkUrlChange, 1000); 
-    window.addEventListener("popstate", checkUrlChange); 
-    
-    function initializeGlobalState() {
+    function waitForMostlyLoaded(timeout = 2000, checkInterval = 100) {
+        return new Promise((resolve) => {
+            let lastElementCount = document.body.getElementsByTagName('*').length;
+            let stableTime = 0;
+
+            const observer = new MutationObserver(() => {
+                const currentCount = document.body.getElementsByTagName('*').length;
+                if (currentCount === lastElementCount) {
+                    stableTime += checkInterval;
+                } else {
+                    stableTime = 0;
+                    lastElementCount = currentCount;
+                }
+            });
+
+            observer.observe(document.body, { childList: true, subtree: true });
+
+            const intervalId = setInterval(() => {
+                if (stableTime >= 250 || performance.now() > timeout) {
+                    clearInterval(intervalId);
+                    observer.disconnect();
+                    resolve();
+                }
+            }, checkInterval);
+        });
+    }
+
+    async function initializeExtension() {
+        await waitForMostlyLoaded();
         globalState.setCurrentOrigin(window.location.origin);
-        currentCategorizedColors = extractColorsCategorized();
-        currentBackgroundColors = [...currentCategorizedColors.background.slice(0, 3)].sort();
-        resetNoChangeTimer();
-        startObserver();
-        setTimeout(() => observer.disconnect(), 30000);
+        categorizedColors = extractColorsCategorized();
+        backgroundColors = [...categorizedColors.background.slice(0, 3)].sort();
+        globalState.setInitialCategorizedColors(categorizedColors);
+        globalState.setInitialBackgroundColors(backgroundColors);
+        uiState.setBackgroundColors(globalState.getInitialBackgroundColors());
+        handleUserChanges();
+        handlePresetsUpdate();
+        getPresets();
     }
 
-    function startObserver() {
-        if (observer) observer.disconnect(); // Ensure the previous observer is removed
-        observer.observe(document.body, { childList: true, subtree: true });
-    }
-
-    let observer = new MutationObserver(() => { 
-        newCategorizedColors = extractColorsCategorized();
-        newBackgroundColors = [...newCategorizedColors.background.slice(0, 3)].sort();
-        if (JSON.stringify(currentBackgroundColors) !== JSON.stringify(newBackgroundColors)) {
-            currentCategorizedColors = newCategorizedColors;
-            currentBackgroundColors = newBackgroundColors;
-            resetNoChangeTimer();
-        }
-    });
-
-    function resetNoChangeTimer() {
-        if (noChangeTimer) {
-            clearTimeout(noChangeTimer);
-        }
-        if (!initialRunCompleted) {
-            // Initial 1.5-second delay
-            noChangeTimer = setTimeout(() => {
-                globalState.setInitialBackgroundColors(currentBackgroundColors);
-                globalState.setInitialCategorizedColors(currentCategorizedColors);
-                uiState.setBackgroundColors(globalState.getInitialBackgroundColors());
-                handleUserChanges();
-                handlePresetsUpdate();
-                getPresets();
-                observer.disconnect();
-                initialRunCompleted = true;
-            }, 1500);
-        }
-    }
-
-    function checkUrlChange() { // Detects URL changes in SPAs and restart the observer
+    function checkUrlChange() {
         if (window.location.href !== currentUrl) {
             currentUrl = window.location.href;
-            initializeGlobalState();
+            initializeExtension();
         }
-    }  
+    }
+
+    initializeExtension();
+    setInterval(checkUrlChange, 1000); 
+    window.addEventListener("popstate", checkUrlChange); 
 };

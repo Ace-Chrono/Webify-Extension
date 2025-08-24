@@ -2,7 +2,8 @@ import { globalState, presetState, textElementsState, uiState, zapState } from "
 import { changeBackgroundColor, changeFont, changeAdvancedSettings, changeSize, changeCase, injectCSS } from "./settings";
 
 export function handlePresetsUpdate() {
-    chrome.storage.onChanged.addListener((changes, areaName) => {
+    chrome.storage.onChanged.
+    Listener((changes, areaName) => {
         if (areaName === 'local' && changes.userPresets) {
             getPresets();
         }
@@ -25,7 +26,6 @@ export function getPresets() {
         presetState.setPresetData(currentPreset);
 
         if (presetState.getPresetData()) {
-            console.log(presetState.getPresetData());
             applyPreset(presetState.getPresetData());
         }
     });
@@ -73,7 +73,6 @@ export function resetPreset() {
     }
 
     const initialBackgroundColors = globalState.getInitialBackgroundColors(); 
-    console.log(initialBackgroundColors)
     changeBackgroundColor(initialBackgroundColors);
     changeAdvancedSettings(100,100,100);
     changeFont(null);

@@ -1,28 +1,3 @@
-/*
-let zapMode = false; 
-let lastHighlightedElement = null;
-const originalHighlightedElementStyle = {};
-
-let userPresets = []; 
-let presetMap = {};
-let presetData = null;
-
-let elementsWithText = [];
-
-let currentUserBackgroundColors = null;
-let currentFont = null; 
-let currentContrast = 100;
-let currentBrightness = 100;
-let currentSaturation = 100;
-let zoomedIn = false; 
-let currentCase = "normal"; 
-let currentCSSChanges = ""; 
-
-let currentOrigin = null; 
-
-let initialBackgroundColors = null; 
-*/
-
 const internalGlobalState = {
     currentOrigin: null,
     initialBackgroundColors: null,

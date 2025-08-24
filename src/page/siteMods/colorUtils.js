@@ -1,4 +1,4 @@
-export function updatePageColors(baseColor, newBaseColor) { //Filters through all the elements in the active tab and assigns any elements with the baseColor to the newBaseColor
+export function updatePageColors(baseColor, newBaseColor) {
     document.querySelectorAll('*').forEach((element) => {
         if (shouldSkipElement(element)) return;
 
@@ -15,10 +15,7 @@ export function updatePageColors(baseColor, newBaseColor) { //Filters through al
     });
 }
 
-//updatePageColors Helper Functions
-//____________________________________________________________________________________________________
-
-export function extractColorsCategorized() { //Extracts the main colors in the page and sorts them into either foreground or background colors. 
+export function extractColorsCategorized() {
     const foregroundAreas = new Map();
     const backgroundAreas = new Map();
 
@@ -29,11 +26,8 @@ export function extractColorsCategorized() { //Extracts the main colors in the p
         const foregroundColor = styles.color;
         const backgroundColor = styles.backgroundColor;
 
-        // Calculate element area (exclude elements with zero size)
         const area = element.offsetWidth * element.offsetHeight;
         if (area <= 0) return;
-
-        // Creates mappings with the color and the total area of all elements with the color
         if (isValidColor(foregroundColor)) {
             foregroundAreas.set(foregroundColor, (foregroundAreas.get(foregroundColor) || 0) + area);
         }
@@ -41,10 +35,8 @@ export function extractColorsCategorized() { //Extracts the main colors in the p
             backgroundAreas.set(backgroundColor, (backgroundAreas.get(backgroundColor) || 0) + area);
         }
     });
-
-    // Convert maps to sorted arrays based on the amount of area that each color covers
     const foreground = [...foregroundAreas.entries()]
-        .sort((a, b) => b[1] - a[1]) // a, b refer to any element and a[1] for example is the area, subtracting sorts by area descending
+        .sort((a, b) => b[1] - a[1])
         .map(entry => entry[0]);
 
     const background = [...backgroundAreas.entries()]
@@ -63,12 +55,20 @@ export function darkenColor(color, amount) {
     return `rgb(${r}, ${g}, ${b})`;
 }
 
-function isValidColor(color) { //Checks if the color is new and rgb
+export function invertColor(rgb) {
+    let [r, g, b] = rgb.match(/\d+/g).map(Number);
+    let [h, s, l] = rgbToHsl(r, g, b);
+    l = 100 - l;
+    let [newR, newG, newB] = hslToRgb(h, s, l);
+    return `rgb(${newR}, ${newG}, ${newB})`;
+}
+
+function isValidColor(color) {
     const excludedValues = ['inherit', 'initial', 'none'];
     return !excludedValues.includes(color) && (color.startsWith("rgb") || color.startsWith("#"));
 }
 
-function shouldSkipElement(element) { //Skips elements that dont display color and or are hidden.
+function shouldSkipElement(element) {
     const ignoredTags = ['SCRIPT', 'LINK', 'META', 'STYLE', 'SVG', 'PATH', 'NOSCRIPT', 'IMG'];
     if (ignoredTags.includes(element.tagName)) return true;
     
@@ -76,31 +76,28 @@ function shouldSkipElement(element) { //Skips elements that dont display color a
     return styles.display === 'none' || styles.visibility === 'hidden' || styles.opacity === '0' || isFullyTransparent(styles.color) || isFullyTransparent(styles.backgroundColor);
 }
 
-function isFullyTransparent(color) { //Checks if a color is transparent at all
+function isFullyTransparent(color) {
     const rgbaMatch = color.match(/rgba?\((\d+),\s*(\d+),\s*(\d+),?\s*([\d.]+)?\)/);
     return rgbaMatch && rgbaMatch[4] !== undefined && parseFloat(rgbaMatch[4]) < 1;
 }
 
-function colorsMatch(color1, color2) { //Checks if two colors match
+function colorsMatch(color1, color2) {
     return normalizeColor(color1) === normalizeColor(color2);
 }
 
-function normalizeColor(color) { //Changes any valid CSS color string like "red" and "#ff0000" to an RGB Format.
+function normalizeColor(color) {
     const context = document.createElement('canvas').getContext('2d');
     context.fillStyle = color;
     return context.fillStyle;
 }
 
 function hexToRgb(hex) {
-    // Remove the '#' if it exists
     hex = hex.replace(/^#/, '');
 
-    // Convert shorthand hex to full form (e.g., #0f0 → #00ff00)
     if (hex.length === 3) {
         hex = hex.split('').map(char => char + char).join('');
     }
 
-    // Extract the RGB values
     let r = parseInt(hex.substring(0, 2), 16);
     let g = parseInt(hex.substring(2, 4), 16);
     let b = parseInt(hex.substring(4, 6), 16);
@@ -108,29 +105,7 @@ function hexToRgb(hex) {
     return [r, g, b];
 }
 
-//____________________________________________________________________________________________________
-
-export function invertColor(rgb) { //Inverses the brightness of the given RGB color
-    // Extract the R, G, and B components from the RGB string
-    let [r, g, b] = rgb.match(/\d+/g).map(Number);
-
-    // Convert RGB to HSL
-    let [h, s, l] = rgbToHsl(r, g, b);
-
-    // Invert the lightness
-    l = 100 - l;
-
-    // Convert back to RGB
-    let [newR, newG, newB] = hslToRgb(h, s, l);
-
-    // Return the new RGB color
-    return `rgb(${newR}, ${newG}, ${newB})`;
-}
-
-//invertColor Helper Functions
-//____________________________________________________________________________________________________
-
-function rgbToHsl(r, g, b) { //Converts rgb to hsl
+function rgbToHsl(r, g, b) {
     r /= 255;
     g /= 255;
     b /= 255;
@@ -155,7 +130,7 @@ function rgbToHsl(r, g, b) { //Converts rgb to hsl
     return [h * 360, s * 100, l * 100];
 }
 
-function hslToRgb(h, s, l) { //Converts hsl to rgb
+function hslToRgb(h, s, l) {
     h /= 360;
     s /= 100;
     l /= 100;

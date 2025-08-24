@@ -86,9 +86,7 @@ export function changeCase(newCase, isClick) {
             }
         }
     }
-
     textElementsState.setTextElements(elementsWithText);
-    console.log(uiState.textCase);
 }
 
 export function injectCSS(cssChanges) {
@@ -103,19 +101,13 @@ export function injectCSS(cssChanges) {
     styleElement.textContent = uiState.getCSSChanges();
 }
 
-function findElementsWithText(rootNode) { //Finds all the elements in the tab with text
-    // Get all elements in the document
+function findElementsWithText(rootNode) {
     const allElements = rootNode.querySelectorAll('*');
     const elementsWithText = [];
-
-    // Loop through each element
     allElements.forEach(element => {
-        // Check if the element has any text nodes that are not empty or just whitespace
         const hasText = Array.from(element.childNodes).some(node => {
             return node.nodeType === Node.TEXT_NODE && node.nodeValue.trim() !== '';
         });
-
-        // If the element has text, add it to the results array
         if (hasText) {
             elementsWithText.push(element);
         }
