@@ -48,8 +48,6 @@ export function updatePresetList() {
                 li.appendChild(presetContainer);
                 presetItems.appendChild(li);
             });
-        } else {
-            presetItems.innerHTML = '<li>No presets available</li>';
         }
     });
 }
