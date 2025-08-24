@@ -1,15 +1,24 @@
+body {
+    margin: 0;
+    padding: 0;
+}
+
 #extensionContainer {
     width: 780px;
     height: 560px;
     color: #314d3e;
     display: flex;
+    justify-content: center;
+    align-items: center;
     flex-wrap: wrap;
-    justify-content: flex-start;
 }
 
 #editingFeaturesContainer {
-    background-color: gainsboro;
+    padding-top: 10px;
+    background: #fdfdfd;
+    border-right: 1px solid #ddd;
     width: 250px;
+    height: 100%; 
 }
 
 #colorWheelContainer {
@@ -25,7 +34,6 @@
 }
 
 #fontContainer {
-    border: 1px solid black;
     text-align: center;
 }
 
@@ -41,13 +49,16 @@
 }
 
 #presetfeaturesContainer {
-    background-color: gainsboro;
-    width: 530px;
+    padding-top: 10px;
+    background: #f4f6f8;
+    box-shadow: inset 2px 0 4px rgba(0,0,0,0.05);
+    flex: 1; 
+    height: 100%; 
 }
 
 #fileUploader {
     margin: 10px;
-    width: auto;
+    width: 240px; 
 }
 
 #presetNameContainer {
@@ -59,41 +70,66 @@
 }
 
 #presetList {
-    border: 1px solid black;
-    height: 450px;
-    overflow-y: auto; 
-    margin: 10px; 
+    border-top: 1px solid #ddd;
+    padding-top: 10px;
+    height: 74%; 
+    margin: 10px 0;
+    display: flex;
+    flex-direction: column;
 }
 
 #presetItems {
-    border: 1px solid black;
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 8px;
+    padding: 10px;
+    overflow-y: auto;
 }
 
 .preset {
-    list-style-type: none;
-    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 8px;
+    padding: 10px;
+}
+
+.preset:hover {
+    background: #e0e3e7;
 }
 
 .presetContainer {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    grid-gap: 10px;
-    margin: 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 6px 10px;
+    border-bottom: 1px solid #ddd;
+    width: 100%;
+    box-sizing: border-box;
 }
 
 .presetText {
-    text-align: center;
-    justify-self: start;
+    text-align: left;
+}
+
+.rightSide {
+    display: flex;
+    align-items: center;
+    gap: 10px;
 }
 
 .deleteButton {
-    border: 1px solid black;
     width: 100px;
-    justify-self: end;
 }
 
 .onOffSwitch {
-    justify-self: end;
+    width: 18px;
+    height: 18px;
+    accent-color: #35e83a;
+    border-radius: 4px;
+    cursor: pointer;
+    margin: 0; 
 }
 
 /*Non-specific classes*/
@@ -102,6 +138,7 @@
     color: black;
     font-family: Arial, sans-serif;
     font-size: 24px;
+    font-weight: bold;
 }
 
 .threeColRow {
@@ -131,4 +168,19 @@
     text-align: center;
     margin: 10px;
     width: auto;
+}
+
+/*General Change*/
+
+.button, .noMarginButton, .fontButton, .deleteButton {
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    background: white;
+    cursor: pointer;
+    transition: background 0.2s, transform 0.1s;
+}
+
+.button:hover, .noMarginButton:hover, .fontButton:hover, .deleteButton:hover {
+    background: #f0f0f0;
+    transform: translateY(-1px);
 }

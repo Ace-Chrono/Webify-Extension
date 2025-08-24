@@ -21,13 +21,16 @@ export function updatePresetList() {
                 presetText.classList.add('presetText');
                 presetContainer.appendChild(presetText);
 
+                const rightSide = document.createElement('div');
+                rightSide.classList.add('rightSide');
+
                 const deleteButton = document.createElement('button');
                 deleteButton.textContent = 'Delete';
                 deleteButton.classList.add('deleteButton');
                 deleteButton.addEventListener('click', function () {
                     removePreset(index);
                 });
-                presetContainer.appendChild(deleteButton);
+                rightSide.appendChild(deleteButton);
 
                 const switchLabel = document.createElement('label');
                 const switchInput = document.createElement('input');
@@ -38,7 +41,9 @@ export function updatePresetList() {
                     togglePresetStatus(index, switchInput.checked);
                 });
                 switchLabel.appendChild(switchInput);
-                presetContainer.appendChild(switchLabel);
+                rightSide.appendChild(switchLabel);
+
+                presetContainer.appendChild(rightSide);
 
                 li.appendChild(presetContainer);
                 presetItems.appendChild(li);
