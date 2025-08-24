@@ -2,8 +2,7 @@ import { globalState, presetState, textElementsState, uiState, zapState } from "
 import { changeBackgroundColor, changeFont, changeAdvancedSettings, changeSize, changeCase, injectCSS } from "./settings";
 
 export function handlePresetsUpdate() {
-    chrome.storage.onChanged.
-    Listener((changes, areaName) => {
+    chrome.storage.onChanged.addListener((changes, areaName) => {
         if (areaName === 'local' && changes.userPresets) {
             getPresets();
         }
