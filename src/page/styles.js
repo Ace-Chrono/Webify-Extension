@@ -1,5 +1,5 @@
 import { extractColorsCategorized } from "./siteMods/colorUtils";
-import { handlePresetsUpdate, getPresets, createPreset, applyPreset } from "./siteMods/presets";
+import { handlePresetsUpdate, getPresets } from "./siteMods/presets";
 import { globalState, uiState } from "./siteMods/state";
 import "./siteMods/listeners.js";
 import { handleUserChanges } from "./siteMods/listeners.js";
@@ -13,14 +13,19 @@ let noChangeTimer = null;
 let initialRunCompleted = false;
 
 window.onload = function () {
-    globalState.setCurrentOrigin(window.location.origin);
-    currentCategorizedColors = extractColorsCategorized();
-    currentBackgroundColors = [...currentCategorizedColors.background.slice(0, 3)].sort();
-    currentUrl = window.location.href; 
-    resetNoChangeTimer();
-    startObserver();
-    setTimeout(() => observer.disconnect(), 30000);
+    initializeGlobalState();
+    setInterval(checkUrlChange, 1000); 
+    window.addEventListener("popstate", checkUrlChange); 
     
+    function initializeGlobalState() {
+        globalState.setCurrentOrigin(window.location.origin);
+        currentCategorizedColors = extractColorsCategorized();
+        currentBackgroundColors = [...currentCategorizedColors.background.slice(0, 3)].sort();
+        resetNoChangeTimer();
+        startObserver();
+        setTimeout(() => observer.disconnect(), 30000);
+    }
+
     function startObserver() {
         if (observer) observer.disconnect(); // Ensure the previous observer is removed
         observer.observe(document.body, { childList: true, subtree: true });
@@ -55,15 +60,10 @@ window.onload = function () {
         }
     }
 
-    setInterval(checkUrlChange, 1000); 
-    window.addEventListener("popstate", checkUrlChange); 
-
     function checkUrlChange() { // Detects URL changes in SPAs and restart the observer
         if (window.location.href !== currentUrl) {
-            const currentChanges = createPreset("Temporary");
             currentUrl = window.location.href;
-            applyPreset(currentChanges);
-            //startObserver(); 
+            initializeGlobalState();
         }
-    }
+    }  
 };
