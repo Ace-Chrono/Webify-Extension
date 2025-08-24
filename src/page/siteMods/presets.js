@@ -31,7 +31,7 @@ export function getPresets() {
     });
 }
 
-function applyPreset(presetData) {
+export function applyPreset(presetData) {
     if (presetState.isApplied()) {
         resetPreset();
         presetState.setApplied(false);
