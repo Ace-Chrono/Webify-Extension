@@ -120,6 +120,9 @@ export function createPreset(presetName) {
 export function addPreset(newPreset) {
     presetState.addPreset(newPreset);
     const updatedPresets = presetState.getPresets();
+    chrome.storage.local.set({ tempCSS: null }, () => {
+        console.log("TempCSS cleared");
+    });
     chrome.storage.local.set({ userPresets: updatedPresets }, () => {
         console.log('Preset added successfully!');
     });

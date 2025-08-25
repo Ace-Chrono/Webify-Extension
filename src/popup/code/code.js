@@ -40,10 +40,6 @@ document.addEventListener("DOMContentLoaded", function() {
         }
     });
 
-    chrome.storage.local.set({ tempCSS: null }, () => {
-        console.log("TempCSS cleared");
-    });
-
     chrome.storage.onChanged.addListener((changes, areaName) => {
         if (areaName === 'local' && changes.userPresets) {
             getUserCSS((cssCode) => {
