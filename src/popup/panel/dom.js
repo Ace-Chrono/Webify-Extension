@@ -1,9 +1,11 @@
+import iro from "@jaames/iro";
+
 const elements = {};
 
 const elementIds = [
     'presetItems',
     'log',
-    'colorWheelImage',
+    'colorWheel',
     'invertButton',
     'resetButton',
     'advancedButton',
@@ -26,6 +28,11 @@ function initDOM() {
 
     elements.fonts = document.getElementsByClassName("fontButton");
 }
+
+export const colorWheel = new iro.ColorPicker("#colorWheel", {
+  width: 150,
+  color: "#f00"
+});
 
 export function getDOM() {
     initDOM();

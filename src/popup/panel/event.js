@@ -1,4 +1,4 @@
-import { getColorAtPosition } from './utils.js';
+import { colorWheel } from './dom.js';
 
 let advancedPopup = null;
 let codePopup = null;
@@ -6,10 +6,13 @@ let codePopup = null;
 export function initEvents(dom) {
     dom.log.textContent = "Loaded";
 
-    dom.colorWheelImage.addEventListener("click", (event) => {
-        const color = getColorAtPosition(event.offsetX, event.offsetY, dom.colorWheelImage);
-        dom.log.textContent = "Selected color: " + color;
-        chrome.runtime.sendMessage({ action: 'changeColor', color });
+    colorWheel.on("input:end", (color) => {
+        const hex = color.hexString;
+        dom.log.textContent = "Selected color: " + hex;
+        chrome.runtime.sendMessage({
+            action: "changeColor",
+            color: hex
+        });
     });
 
     dom.invertButton.addEventListener("click", () => {
