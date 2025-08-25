@@ -23,6 +23,7 @@ export function getPresets() {
         const currentOrigin = globalState.getCurrentOrigin();
         const currentPreset = presetMap[currentOrigin];
         presetState.setPresetData(currentPreset);
+        console.log(presetState.getPresetData().CSSChanges);
 
         if (presetState.getPresetData()) {
             applyPreset(presetState.getPresetData());

@@ -60,9 +60,9 @@ export function initEvents(dom) {
     dom.codeButton.addEventListener("click", () => {
         dom.log.textContent = "Code clicked";
         if (!codePopup || codePopup.closed) {
-        codePopup = window.open('code.html', 'CodeEditor', 'width=600,height=800');
+            codePopup = window.open('code.html', 'CodeEditor', 'width=600,height=800');
         } else {
-        codePopup.focus();
+            codePopup.focus();
         }
     });
 

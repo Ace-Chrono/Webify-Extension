@@ -37,7 +37,11 @@ window.onload = function () {
 
     async function initializeExtension() {
         await waitForMostlyLoaded();
-        globalState.setCurrentOrigin(window.location.origin);
+        const currentOrigin = window.location.origin;
+        globalState.setCurrentOrigin(currentOrigin);
+        chrome.storage.local.set({ currentOrigin }, () => {
+            console.log('Current origin saved:', currentOrigin);
+        });
         categorizedColors = extractColorsCategorized();
         backgroundColors = [...categorizedColors.background.slice(0, 3)].sort();
         globalState.setInitialCategorizedColors(categorizedColors);
