@@ -59,16 +59,35 @@ body {
 }
 
 #fileUploader {
-    margin: 10px;
-    width: 240px; 
+    color: transparent;              /* hides the "No file chosen" text */
 }
 
-#presetNameContainer {
-    margin-left: 10px;
+#fileUploader::file-selector-button {
+    box-sizing: border-box;
+    margin: 10px;
+    padding: 5px;
+    width: 240px;
+    background-color: #4CAF50;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    font-size: 14px;
+    cursor: pointer;
+}
+
+#fileUploader::file-selector-button:hover {
+    background-color: #45a049;
+    transform: translateY(-1px);
 }
 
 #presetNameField {
-    width: 240px; 
+    box-sizing: border-box;
+    margin: 10px;
+    padding: 5px;
+    width: 240px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    font-size: 14px;
+    text-align: center;
 }
 
 #presetList {
@@ -154,6 +173,7 @@ body {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
     grid-gap: 10px;
+    align-items: center;
 }
 
 .noMarginButton {
