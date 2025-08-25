@@ -2,11 +2,9 @@ import { css } from '@codemirror/lang-css';
 import { basicSetup, EditorView } from 'codemirror';
 
 document.addEventListener("DOMContentLoaded", function() {
-    //const initialText = 'body { background-color: #f0f0f0 !important; }';
     const targetElement = document.getElementById("cssEditor");
 
     const editorView = new EditorView({
-        //doc: initialText,
         extensions: [
             basicSetup,
             css(),
@@ -15,18 +13,22 @@ document.addEventListener("DOMContentLoaded", function() {
     });
 
     function getUserCSS(callback) {
-        chrome.storage.local.get('userPresets', (data) => {
-            const userPresets = data.userPresets || [];
+        chrome.storage.local.get(['userPresets', 'currentOrigin', 'tempCSS'], (data) => {
+            const { userPresets = [], currentOrigin, tempCSS } = data;
+
+            if (tempCSS) {
+                callback(tempCSS);
+                return;
+            }
+
             const presetMap = {};
             userPresets.forEach(preset => {
                 presetMap[preset.websiteURL] = preset;
             });
-            chrome.storage.local.get(['currentOrigin'], (data) => {
-                const currentOrigin = data.currentOrigin;
-                const currentPreset = presetMap[currentOrigin] || null;
-                const CSSChanges = currentPreset ? currentPreset.CSSChanges : null;
-                callback(CSSChanges);
-            });
+
+            const currentPreset = presetMap[currentOrigin] || null;
+            const CSSChanges = currentPreset ? currentPreset.CSSChanges : '';
+            callback(CSSChanges);
         });
     }
 
@@ -36,6 +38,10 @@ document.addEventListener("DOMContentLoaded", function() {
                 changes: { from: 0, to: editorView.state.doc.length, insert: cssCode }
             });
         }
+    });
+
+    chrome.storage.local.set({ tempCSS: null }, () => {
+        console.log("TempCSS cleared");
     });
 
     chrome.storage.onChanged.addListener((changes, areaName) => {
@@ -54,7 +60,9 @@ document.addEventListener("DOMContentLoaded", function() {
 
     injectButton.addEventListener('click', function() {
         const cssCode = editorView.state.doc.toString();
-        console.log(cssCode);
+        chrome.storage.local.set({ tempCSS: cssCode }, () => {
+            console.log("Temporary CSS saved");
+        });
         chrome.runtime.sendMessage({ action: 'injectCSS', css: cssCode});
     });
 });
