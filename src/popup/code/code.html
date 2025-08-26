@@ -8,7 +8,17 @@
     <link href="code.css" rel="stylesheet" type="text/css" />
 </head>
 <body>
-    <button id="inject_button">Inject CSS</button>
-    <div id="cssEditor"></div>
+    <body>
+        <div class="editor-container">
+            <div class="toolbar">
+                <div class="button-container">
+                    <button id="inject_button">💉</button>
+                    <button id="reload_button">🔄</button>
+                </div>
+                <span id="status" class="status-badge">Preset applied</span>
+            </div>
+            <div id="cssEditor"></div>
+        </div>
+    </body>
 </body>
 </html>

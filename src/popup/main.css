@@ -67,7 +67,7 @@ body {
     margin: 10px;
     padding: 5px;
     width: 240px;
-    background-color: #4CAF50;
+    background-color: #42b3f5;
     border: 1px solid #ccc;
     border-radius: 6px;
     font-size: 14px;
@@ -75,7 +75,7 @@ body {
 }
 
 #fileUploader::file-selector-button:hover {
-    background-color: #45a049;
+    background-color: #2fa1e6;
     transform: translateY(-1px);
 }
 
@@ -147,7 +147,7 @@ body {
 .onOffSwitch {
     width: 18px;
     height: 18px;
-    accent-color: #35e83a;
+    accent-color: #42b3f5;
     border-radius: 4px;
     cursor: pointer;
     margin: 0; 

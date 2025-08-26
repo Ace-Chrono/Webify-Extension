@@ -3,32 +3,58 @@ import { basicSetup, EditorView } from 'codemirror';
 
 document.addEventListener("DOMContentLoaded", function() {
     const targetElement = document.getElementById("cssEditor");
-
     const editorView = new EditorView({
         extensions: [
             basicSetup,
             css(),
+            EditorView.updateListener.of(update => {
+                if (update.docChanged) {
+                    markDirty();
+                }
+            })
         ],
         parent: targetElement,
     });
 
+    let isDirty = true;
+    let originalCSS = '';
+
+    function markDirty() {
+        const cssCode = editorView.state.doc.toString();
+        isDirty = (cssCode !== originalCSS);
+        updateUI();
+    }
+
+    function updateUI() {
+        const statusEl = document.getElementById('status');
+        if (!statusEl) return;
+
+        if (isDirty) {
+            statusEl.textContent = "Unsaved changes. Inject to save temporarily, add the preset to save completely.";
+            statusEl.style.color = "orange";
+        } else {
+            statusEl.textContent = "Preset saved.";
+            statusEl.style.color = "green";
+        }
+    }
+
     function getUserCSS(callback) {
         chrome.storage.local.get(['userPresets', 'currentOrigin', 'tempCSS'], (data) => {
             const { userPresets = [], currentOrigin, tempCSS } = data;
-
-            if (tempCSS) {
-                callback(tempCSS);
-                return;
-            }
-
             const presetMap = {};
             userPresets.forEach(preset => {
                 presetMap[preset.websiteURL] = preset;
             });
-
             const currentPreset = presetMap[currentOrigin] || null;
             const CSSChanges = currentPreset ? currentPreset.CSSChanges : '';
-            callback(CSSChanges);
+            originalCSS = CSSChanges;
+
+            if (tempCSS) {
+                callback(tempCSS);
+                return;
+            } else {
+                callback(CSSChanges);
+            }
         });
     }
 
@@ -60,5 +86,13 @@ document.addEventListener("DOMContentLoaded", function() {
             console.log("Temporary CSS saved");
         });
         chrome.runtime.sendMessage({ action: 'injectCSS', css: cssCode});
+    });
+
+    const reloadButton = document.getElementById('reload_button');
+
+    reloadButton.addEventListener('click', function() {
+        chrome.storage.local.set({ tempCSS: null }, () => {
+            console.log("Temporary CSS remmoved");
+        });
     });
 });
