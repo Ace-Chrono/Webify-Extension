@@ -94,5 +94,12 @@ document.addEventListener("DOMContentLoaded", function() {
         chrome.storage.local.set({ tempCSS: null }, () => {
             console.log("Temporary CSS remmoved");
         });
+        getUserCSS((cssCode) => {
+            if (cssCode) {
+                editorView.dispatch({
+                    changes: { from: 0, to: editorView.state.doc.length, insert: cssCode }
+                });
+            }
+        });
     });
 });
