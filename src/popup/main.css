@@ -93,7 +93,7 @@ body {
 #presetList {
     border-top: 1px solid #ddd;
     padding-top: 10px;
-    height: 74%; 
+    height: 70%; 
     margin: 10px 0;
     display: flex;
     flex-direction: column;
@@ -162,6 +162,12 @@ body {
     font-weight: bold;
 }
 
+.titleRow {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
 .threeColRow {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
@@ -190,6 +196,12 @@ body {
     text-align: center;
     margin: 10px;
     width: auto;
+}
+
+.itemInvisible {
+    flex: 0 1 auto;
+    width: 65px; 
+    visibility: hidden;
 }
 
 /*General Change*/

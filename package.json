@@ -42,8 +42,12 @@
         "manifest": "./src/manifest.json",
         "js_bundles": [
             {
+                "name": "config",
+                "src": "./src/config.js"
+            },
+            {
                 "name": "background",
-                "src": "./src/background.js"
+                "src": "./src/background/background.js"
             },
             {
                 "name": "main",
@@ -56,6 +60,10 @@
             {
                 "name": "code",
                 "src": "./src/popup/code/code.js"
+            },
+            {
+                "name": "clerk",
+                "src": "./src/popup/clerk/clerk.js"
             },
             {
                 "name": "styles",
@@ -97,12 +105,17 @@
                 "src": "./src/popup/code/code.css"
             },
             {
+                "name": "advanced",
+                "src": "./src/popup/advanced/advanced.css"
+            },
+            {
                 "name": "styles",
                 "src": "./src/page/styles.css"
             }
         ]
     },
     "dependencies": {
+        "@clerk/clerk-js": "^5.91.2",
         "@codemirror/lang-css": "^6.3.1",
         "@jaames/iro": "^5.5.2",
         "codemirror": "^6.0.1"

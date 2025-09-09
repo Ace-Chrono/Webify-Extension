@@ -5,15 +5,22 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Advanced Options</title>
     <script type="module" src="advanced.js"></script>
+    <link href="advanced.css" rel="stylesheet" type="text/css" />
 </head>
-<body>
-    <h1>Advanced Options</h1>
-    <!-- Your advanced settings here -->
-    <label for="slider">Contrast:</label>
-    <input type="range" id="contrast_slider" name="slider" min="0" max="200" value="100">
-    <label for="slider">Brightness:</label>
-    <input type="range" id="brightness_slider" name="slider" min="0" max="200" value="100">
-    <label for="slider">Saturation:</label>
-    <input type="range" id="saturation_slider" name="slider" min="0" max="200" value="100">
-</body>
+    <body>
+        <div class="slider-group">
+            <label for="contrast_slider">Contrast</label>
+            <input type="range" class="slider" id="contrast_slider" min="0" max="200" value="100">
+        </div>
+
+        <div class="slider-group">
+            <label for="brightness_slider">Brightness</label>
+            <input type="range" class="slider" id="brightness_slider" min="0" max="200" value="100">
+        </div>
+
+        <div class="slider-group">
+            <label for="saturation_slider">Saturation</label>
+            <input type="range" class="slider" id="saturation_slider" min="0" max="200" value="100">
+        </div>
+    </body>
 </html>

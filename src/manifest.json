@@ -5,6 +5,7 @@
     "description": "Customizing web pages to your liking",
     "manifest_version": 3,
     "permissions": ["storage", "tabs"],
+    "host_permissions": ["http://localhost:5000/*"],
     "action": {
         "default_popup": "main.html",
         "default_icon": "assets/neuro.png"
