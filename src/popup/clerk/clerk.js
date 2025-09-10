@@ -1,8 +1,7 @@
 import { Clerk } from "@clerk/clerk-js";
 import { CLERK_PUBLISHABLE_KEY } from "../../config";
 
-const clerkPubKey = CLERK_PUBLISHABLE_KEY;
-const clerk = new Clerk(clerkPubKey);
+const clerk = new Clerk(CLERK_PUBLISHABLE_KEY);
 const authContainer = document.getElementById("clerk-auth"); 
 
 async function initClerk() {
@@ -11,25 +10,42 @@ async function initClerk() {
 	if (!clerk.user) {
 		clerk.mountSignIn(authContainer);
 	} else {
-		clerk.mountUserProfile(authContainer, {
-			customPages: [
-				{
-					url: "/sign-out",
-					label: "Sign Out",
-					mountIcon: (el) => {
-						el.innerHTML = "🚪"
-					},
-					unmountIcon: (el) => {
-						el.innerHTML = ""
-					},
-					mount: async (el) => {
-						const user = clerk.user
+		mountProfile();
+	}
 
-						el.innerHTML = `
+	clerk.addListener(({ user, session }) => {
+		if (user && session) {
+			console.log("User signed in");
+			mountProfile();
+			storeToken();
+		} else {
+			console.log("User signed out");
+			removeToken();
+			clerk.mountSignIn(authContainer);
+		}
+	});
+}
+
+function mountProfile() {
+	clerk.mountUserProfile(authContainer, {
+		customPages: [
+			{
+				url: "/sign-out",
+				label: "Sign Out",
+				mountIcon: (el) => {
+					el.innerHTML = "🚪";
+				},
+				unmountIcon: (el) => {
+					el.innerHTML = "";
+				},
+				mount: (el) => {
+					const user = clerk.user;
+
+					el.innerHTML = `
 						<div style="padding: 16px; text-align: center;">
-							<h2>Hello, ${user.fullName || user.username || "User"} 👋</h2>
-							<p>${user.primaryEmailAddress?.emailAddress || ""}</p>
-							<button id="custom-signout" style="
+						<h2>Hello, ${user.fullName || user.username || "User"} 👋</h2>
+						<p>${user.primaryEmailAddress?.emailAddress || ""}</p>
+						<button id="custom-signout" style="
 							margin-top: 20px;
 							padding: 10px 16px;
 							font-size: 16px;
@@ -38,44 +54,40 @@ async function initClerk() {
 							border: none;
 							border-radius: 4px;
 							cursor: pointer;
-							">Sign Out</button>
+						">Sign Out</button>
 						</div>
-						`
+					`;
 
-						document
-						.getElementById("custom-signout")
-						.addEventListener("click", () => clerk.signOut())
-					},
-					unmount: (el) => {
-						el.innerHTML = ""
-					},
+					document
+					.getElementById("custom-signout")
+					.addEventListener("click", () => clerk.signOut());
 				},
-			],
-		})
-	}
-
-	clerk.on("signedIn", async () => {
-		const token = await getToken();
-		if (token) {
-			chrome.storage.local.set({ clerkToken: token }, () => {
-				console.log("Stored Clerk token in chrome.storage");
-			});
-		}
-		window.location.reload();
+				unmount: (el) => {
+					el.innerHTML = "";
+				},
+			},
+		],
 	});
+}
 
-	clerk.on("signedOut", () => {
-		window.location.reload();
+async function storeToken() {
+	const token = await getToken();
+	if (token) {
+		chrome.storage.local.set({ clerkToken: token }, () => {
+			console.log("Stored Clerk token in chrome.storage" + token);
+		});
+	}
+}
+
+function removeToken() {
+	chrome.storage.local.remove("clerkToken", () => {
+		console.log("Removed Clerk token from storage");
 	});
 }
 
 export async function getToken() {
 	if (!clerk.user || !clerk.session) return null;
-	return await clerk.session.getToken({ template: "default" });
-}
-
-export function isSignedIn() {
-	return !clerk.user;
+	return await clerk.session.getToken();
 }
 
 initClerk();
