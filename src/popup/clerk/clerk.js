@@ -11,29 +11,62 @@ async function initClerk() {
 	if (!clerk.user) {
 		clerk.mountSignIn(authContainer);
 	} else {
-		clerk.mountUserButton(authContainer);
+		clerk.mountUserProfile(authContainer, {
+			customPages: [
+				{
+					url: "/sign-out",
+					label: "Sign Out",
+					mountIcon: (el) => {
+						el.innerHTML = "🚪"
+					},
+					unmountIcon: (el) => {
+						el.innerHTML = ""
+					},
+					mount: async (el) => {
+						const user = clerk.user
+
+						el.innerHTML = `
+						<div style="padding: 16px; text-align: center;">
+							<h2>Hello, ${user.fullName || user.username || "User"} 👋</h2>
+							<p>${user.primaryEmailAddress?.emailAddress || ""}</p>
+							<button id="custom-signout" style="
+							margin-top: 20px;
+							padding: 10px 16px;
+							font-size: 16px;
+							background: #e53e3e;
+							color: white;
+							border: none;
+							border-radius: 4px;
+							cursor: pointer;
+							">Sign Out</button>
+						</div>
+						`
+
+						document
+						.getElementById("custom-signout")
+						.addEventListener("click", () => clerk.signOut())
+					},
+					unmount: (el) => {
+						el.innerHTML = ""
+					},
+				},
+			],
+		})
 	}
 
 	clerk.on("signedIn", async () => {
-		console.log("User signed in — can now sync presets");
-		if (typeof window.syncPresets === "function") {
-			const localPresets = await window.getLocalPresets?.();
-			await window.syncPresets?.(localPresets);
-		}
-	});
-
-	clerk.on("signedIn", async () => {
-		console.log("User signed in")
-
-		const token = await getToken()
+		const token = await getToken();
 		if (token) {
 			chrome.storage.local.set({ clerkToken: token }, () => {
-				console.log("Stored Clerk token in chrome.storage")
-			})
+				console.log("Stored Clerk token in chrome.storage");
+			});
 		}
+		window.location.reload();
+	});
 
-		window.close()
-	})
+	clerk.on("signedOut", () => {
+		window.location.reload();
+	});
 }
 
 export async function getToken() {

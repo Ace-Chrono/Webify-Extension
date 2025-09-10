@@ -109,6 +109,10 @@
                 "src": "./src/popup/advanced/advanced.css"
             },
             {
+                "name": "clerk",
+                "src": "./src/popup/clerk/clerk.css"
+            },
+            {
                 "name": "styles",
                 "src": "./src/page/styles.css"
             }
