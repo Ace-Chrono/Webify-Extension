@@ -50,6 +50,10 @@
                 "src": "./src/background/background.js"
             },
             {
+                "name": "api",
+                "src": "./src/background/api/api.js"
+            },
+            {
                 "name": "main",
                 "src": "./src/popup/main.js"
             },

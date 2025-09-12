@@ -58,8 +58,12 @@ body {
     height: 100%; 
 }
 
+#syncButton, #signInButton {
+    width: 60px; 
+}
+
 #fileUploader {
-    color: transparent;              /* hides the "No file chosen" text */
+    color: transparent;
 }
 
 #fileUploader::file-selector-button {
@@ -196,12 +200,6 @@ body {
     text-align: center;
     margin: 10px;
     width: auto;
-}
-
-.itemInvisible {
-    flex: 0 1 auto;
-    width: 65px; 
-    visibility: hidden;
 }
 
 /*General Change*/

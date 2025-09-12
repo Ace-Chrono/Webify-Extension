@@ -15,6 +15,7 @@ const elementIds = [
     'codeButton',
     'shareButton',
     'fileUploader',
+    'syncButton',
     'signInButton',
     'loadButton',
     'saveButton',

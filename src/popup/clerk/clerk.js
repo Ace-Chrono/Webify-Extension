@@ -17,10 +17,8 @@ async function initClerk() {
 		if (user && session) {
 			console.log("User signed in");
 			mountProfile();
-			storeToken();
 		} else {
 			console.log("User signed out");
-			removeToken();
 			clerk.mountSignIn(authContainer);
 		}
 	});
@@ -68,26 +66,6 @@ function mountProfile() {
 			},
 		],
 	});
-}
-
-async function storeToken() {
-	const token = await getToken();
-	if (token) {
-		chrome.storage.local.set({ clerkToken: token }, () => {
-			console.log("Stored Clerk token in chrome.storage" + token);
-		});
-	}
-}
-
-function removeToken() {
-	chrome.storage.local.remove("clerkToken", () => {
-		console.log("Removed Clerk token from storage");
-	});
-}
-
-export async function getToken() {
-	if (!clerk.user || !clerk.session) return null;
-	return await clerk.session.getToken();
 }
 
 initClerk();

@@ -2,7 +2,7 @@ import { initPresets, updatePresetList } from "./panel/presets";
 import { getDOM } from "./panel/dom";
 import { initEvents } from "./panel/event";
 
-document.addEventListener("DOMContentLoaded", function() {
+document.addEventListener("DOMContentLoaded", function() { 
     chrome.tabs.query({ active: true, currentWindow: true }, function(tabs) {
         if (tabs.length > 0) {
             const activeTabId = tabs[0].id;

@@ -1,4 +1,5 @@
 import { colorWheel } from './dom.js';
+import { syncPresets } from './token.js';
 
 let advancedPopup = null;
 let codePopup = null;
@@ -80,6 +81,10 @@ export function initEvents(dom) {
     dom.shareButton.addEventListener("click", () => {
         dom.log.textContent = "Share clicked";
         chrome.runtime.sendMessage({ action: 'share' });
+    });
+
+    dom.syncButton.addEventListener("click", () => {
+        syncPresets();
     });
 
     dom.signInButton.addEventListener("click", () => {
