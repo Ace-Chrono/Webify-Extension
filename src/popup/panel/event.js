@@ -83,8 +83,9 @@ export function initEvents(dom) {
         chrome.runtime.sendMessage({ action: 'share' });
     });
 
-    dom.syncButton.addEventListener("click", () => {
-        syncPresets();
+    dom.syncButton.addEventListener("click", async () => {
+        const presets = await syncPresets();
+        chrome.runtime.sendMessage({ action: 'sync', data: presets });
     });
 
     dom.signInButton.addEventListener("click", () => {

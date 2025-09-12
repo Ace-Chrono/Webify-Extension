@@ -95,6 +95,12 @@ export function handleUserChanges() {
             link.download = 'settings.json';
             link.click();
         }
+        if (message.action === 'sync') {
+            const presets = message.data; 
+            presets.forEach(preset => {
+                addPreset(preset);
+            });
+        }
         if (message.action === 'load') {
             loadedData = message.data; 
             addPreset(loadedData);

@@ -10,8 +10,19 @@ export async function syncPresets() {
     if (!clerk.session) return alert('Please sign in first');
 
     const token = await clerk.session.getToken();
-    const presets = await fetchUserPresets(token);
-    console.log('Synced presets:', presets);
+    const response  = await fetchUserPresets(token);
+    if (!response || !response.success || !Array.isArray(response.data)) {
+        console.log('No presets found or invalid format');
+        return [];
+    }
 
-    return presets;
+    const presets = response.data;
+
+    console.log('Preset settings:');
+    const settingsArray = presets.map((preset, index) => {
+        console.log(`Preset #${index + 1} (${preset.name}):`, preset.settings);
+        return preset.settings;
+    });
+
+    return settingsArray;
 }

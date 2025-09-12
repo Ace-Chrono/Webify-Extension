@@ -98,6 +98,11 @@ chrome.runtime.onMessage.addListener(function(message,) { //Sends the message to
             chrome.tabs.sendMessage(tabs[0].id, { action: 'share'});
         });
     }
+    if (message.action === 'sync') {
+        chrome.tabs.query({ active: true, currentWindow: true }, function(tabs) {
+            chrome.tabs.sendMessage(tabs[0].id, { action: 'sync', data: message.data});
+        });
+    }
     if (message.action === 'load') {
         chrome.tabs.query({ active: true, currentWindow: true }, function(tabs) {
             chrome.tabs.sendMessage(tabs[0].id, { action: 'load', data: message.data});
