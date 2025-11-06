@@ -58,7 +58,7 @@ function mountProfile() {
 
 					document
 					.getElementById("custom-signout")
-					.addEventListener("click", () => clerk.signOut());
+					.addEventListener("click", () => clerk.signOut({ redirectUrl: chrome.runtime.getURL("clerk.html") }));
 				},
 				unmount: (el) => {
 					el.innerHTML = "";
