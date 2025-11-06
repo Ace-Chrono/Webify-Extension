@@ -144,8 +144,8 @@ body {
     gap: 10px;
 }
 
-.deleteButton {
-    width: 100px;
+.deleteButton, .shareButton, .downloadButton {
+    width: 80px;
 }
 
 .onOffSwitch {
@@ -204,7 +204,7 @@ body {
 
 /*General Change*/
 
-.button, .noMarginButton, .fontButton, .deleteButton {
+.button, .noMarginButton, .fontButton, .deleteButton, .shareButton, .downloadButton {
     border: 1px solid #ccc;
     border-radius: 6px;
     background: white;
@@ -212,7 +212,7 @@ body {
     transition: background 0.2s, transform 0.1s;
 }
 
-.button:hover, .noMarginButton:hover, .fontButton:hover, .deleteButton:hover {
+.button:hover, .noMarginButton:hover, .fontButton:hover, .deleteButton:hover, .shareButton:hover, .downloadButton:hover {
     background: #f0f0f0;
     transform: translateY(-1px);
 }

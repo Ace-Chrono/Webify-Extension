@@ -1,7 +1,7 @@
 import { darkenColor, invertColor } from "./colorUtils";
 import { changeBackgroundColor, changeFont, changeAdvancedSettings, changeSize, changeCase, injectCSS, } from "./settings";
 import { resetPreset, addPreset, createPreset } from "./presets";
-import { uiState, zapState } from "./state";
+import { uiState } from "./state";
 import { zap } from "./zapMode";
 
 let newUserBackgroundColors = null;
@@ -70,31 +70,6 @@ export function handleUserChanges() {
                 injectCSS(message.css);
             }
         }
-        if (message.action === 'share') {
-            const presetName = "test";
-            const websiteURL = window.location.origin;
-            const isActive = true; 
-            const settings = {
-                presetName,
-                websiteURL,
-                isActive,
-                backgroundColors: uiState.getBackgroundColors(),
-                contrast: uiState.getContrast(),
-                brightness: uiState.getBrightness(),
-                saturation: uiState.getSaturation(),
-                font: uiState.getFont(),
-                zoomedIn: uiState.getZoomedIn(),
-                textCase: uiState.getTextCase(),
-                zappedElementsID: zapState.getIDs(),
-                cssChanges: uiState.getCSSChanges()
-            }
-            const blob = new Blob([JSON.stringify(settings, null, 2)], { type: "application/json" });
-            const url = URL.createObjectURL(blob);
-            const link = document.createElement("a");
-            link.href = url;
-            link.download = 'settings.json';
-            link.click();
-        }
         if (message.action === 'sync') {
             const presets = message.data; 
             presets.forEach(preset => {
@@ -114,6 +89,14 @@ export function handleUserChanges() {
             chrome.storage.local.remove('userPresets', () => {
                 console.log('User presets removed!');
             });
+        }
+        if (message.action === 'download') {
+            const blob = new Blob([JSON.stringify(message.data, null, 2)], { type: "application/json" });
+            const url = URL.createObjectURL(blob);
+            const link = document.createElement("a");
+            link.href = url;
+            link.download = 'settings.json';
+            link.click();
         }
     });
 }

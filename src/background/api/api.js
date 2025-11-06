@@ -1,5 +1,39 @@
 import { API_BASE_URL } from "../../config";
 
+export async function createPreset (newPreset) {
+        if(!newPreset.name || !newPreset.settings || !newPreset.image) {
+            return {success: false, message: "Please fill in all fields."};
+        }
+
+        const formData = new FormData();
+        formData.append("name", newPreset.name);
+        formData.append("settings", newPreset.settings);
+        formData.append("image", newPreset.image);
+
+        for (const [key, value] of formData.entries()) {
+            if (value instanceof File) {
+                console.log(`${key}: File -> name: ${value.name}, type: ${value.type}, size: ${value.size}`);
+            } else {
+                console.log(`${key}: ${value}`);
+            }
+        }
+
+        try {
+            const res = await fetch(`${API_BASE_URL}/api/presets`, {
+            method: "POST",
+            body: formData,
+            });
+
+            const data = await res.json();
+            if (!res.ok) throw new Error(data.message || "Upload failed");
+
+            return { success: true, message: "Preset created successfully", data: data.data };
+        } catch (err) {
+            console.error(err);
+            return { success: false, message: err.message };
+        }
+    }
+
 export async function createUserPreset (newUserPreset, token) {
     if(!newUserPreset.name || !newUserPreset.settings || !newUserPreset.image || newUserPreset.isPublished === undefined) {
         return {success: false, message: "Please fill in all fields."};

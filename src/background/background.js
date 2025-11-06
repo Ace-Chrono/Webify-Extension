@@ -93,11 +93,6 @@ chrome.runtime.onMessage.addListener(function(message,) { //Sends the message to
             }
         });
     }
-    if (message.action === 'share') {
-        chrome.tabs.query({ active: true, currentWindow: true }, function(tabs) {
-            chrome.tabs.sendMessage(tabs[0].id, { action: 'share'});
-        });
-    }
     if (message.action === 'sync') {
         chrome.tabs.query({ active: true, currentWindow: true }, function(tabs) {
             chrome.tabs.sendMessage(tabs[0].id, { action: 'sync', data: message.data});
@@ -116,6 +111,11 @@ chrome.runtime.onMessage.addListener(function(message,) { //Sends the message to
     if (message.action === 'clear') {
         chrome.tabs.query({ active: true, currentWindow: true }, function(tabs) {
             chrome.tabs.sendMessage(tabs[0].id, { action: 'clear'});
+        });
+    }
+    if (message.action === 'download') {
+        chrome.tabs.query({ active: true, currentWindow: true }, function(tabs) {
+            chrome.tabs.sendMessage(tabs[0].id, { action: 'download', data: message.data});
         });
     }
 });

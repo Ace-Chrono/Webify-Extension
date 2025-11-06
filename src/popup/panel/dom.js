@@ -13,7 +13,6 @@ const elementIds = [
     'sizeButton',
     'zapButton',
     'codeButton',
-    'shareButton',
     'fileUploader',
     'syncButton',
     'signInButton',

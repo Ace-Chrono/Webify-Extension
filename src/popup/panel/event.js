@@ -78,11 +78,6 @@ export function initEvents(dom) {
         }
     });
 
-    dom.shareButton.addEventListener("click", () => {
-        dom.log.textContent = "Share clicked";
-        chrome.runtime.sendMessage({ action: 'share' });
-    });
-
     dom.syncButton.addEventListener("click", async () => {
         const presets = await syncPresets();
         chrome.runtime.sendMessage({ action: 'sync', data: presets });
@@ -120,6 +115,7 @@ export function initEvents(dom) {
     dom.saveButton.addEventListener("click", () => {
         dom.log.textContent = "Save clicked";
         chrome.runtime.sendMessage({ action: 'save', name: dom.presetNameField.value });
+        dom.log.textContent = dom.presetNameField.value;
     });
 
     dom.clearButton.addEventListener("click", () => {
