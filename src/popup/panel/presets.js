@@ -1,5 +1,3 @@
-import { publishPreset } from "./token";
-
 let presetItems = null;
 
 export function initPresets(presetElement) {
@@ -34,6 +32,7 @@ export function updatePresetList() {
                 });
                 rightSide.appendChild(downloadButton);
 
+                /*
                 const shareButton = document.createElement('button');
                 shareButton.textContent = 'Share';
                 shareButton.classList.add('shareButton');
@@ -41,6 +40,7 @@ export function updatePresetList() {
                     sharePreset(preset);
                 });
                 rightSide.appendChild(shareButton);
+                */
 
                 const deleteButton = document.createElement('button');
                 deleteButton.textContent = 'Delete';
@@ -74,9 +74,11 @@ function downloadPreset(preset) {
     chrome.runtime.sendMessage({ action: 'download', data: preset});
 }
 
+/*
 function sharePreset(preset) {
     publishPreset(preset)
 }
+*/
 
 function removePreset(index) {
     chrome.storage.local.get('userPresets', function(data) {

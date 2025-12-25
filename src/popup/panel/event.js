@@ -1,5 +1,4 @@
 import { colorWheel } from './dom.js';
-import { syncPresets } from './token.js';
 
 let advancedPopup = null;
 let codePopup = null;
@@ -78,11 +77,14 @@ export function initEvents(dom) {
         }
     });
 
+    /*
     dom.syncButton.addEventListener("click", async () => {
         const presets = await syncPresets();
         chrome.runtime.sendMessage({ action: 'sync', data: presets });
     });
+    */
 
+    /*
     dom.signInButton.addEventListener("click", () => {
         dom.log.textContent = "Sign in clicked";
         if (!clerkPopup || clerkPopup.closed) {
@@ -91,6 +93,7 @@ export function initEvents(dom) {
             clerkPopup.focus();
         }
     });
+    */
 
     dom.loadButton.addEventListener("click", () => {
         const file = dom.fileUploader.files?.[0];

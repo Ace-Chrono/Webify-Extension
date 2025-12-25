@@ -19,11 +19,5 @@
         "css": ["styles.css"],  
         "js": ["styles.js"]
       }
-    ],
-    "web_accessible_resources": [
-      {
-        "resources": ["clerk.html"],
-        "matches": ["<all_urls>"]
-      }
     ]
 }

@@ -58,12 +58,14 @@ export function handleUserChanges() {
                 injectCSS(message.css);
             }
         }
+        /*
         if (message.action === 'sync') {
             const presets = message.data; 
             presets.forEach(preset => {
                 addPreset(preset);
             });
         }
+        */
         if (message.action === 'load') {
             loadedData = message.data; 
             addPreset(loadedData);
