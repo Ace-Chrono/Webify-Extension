@@ -74,8 +74,16 @@
                 "src": "./src/page/styles.js"
             },
             {
-                "name": "colorUtils",
-                "src": "./src/page/siteMods/colorUtils.js"
+                "name": "colorApplication",
+                "src": "./src/page/siteMods/colorUtilsHelpers/colorApplication.js"
+            },
+            {
+                "name": "colorExtraction",
+                "src": "./src/page/siteMods/colorUtilsHelpers/colorExtraction.js"
+            },
+            {
+                "name": "colorMap",
+                "src": "./src/page/siteMods/colorUtilsHelpers/colorMap.js"
             },
             {
                 "name": "listeners",

@@ -1,5 +1,6 @@
-import { globalState, presetState, textElementsState, uiState, zapState } from "./state";
-import { changeBackgroundColor, changeFont, changeAdvancedSettings, changeSize, changeCase, injectCSS } from "./settings";
+import { colorEngineState, globalState, presetState, textElementsState, uiState, zapState } from "./state";
+import { changeFont, changeAdvancedSettings, changeSize, changeCase, injectCSS } from "./settings";
+import { changeColor, resetColor } from "./colorUtilsHelpers/colorApplication";
 
 export function handlePresetsUpdate() {
     chrome.storage.onChanged.addListener((changes, areaName) => {
@@ -36,12 +37,7 @@ export function applyPreset(presetData) {
         presetState.setApplied(false);
     }
     if (presetData.websiteURL == window.location.origin && presetData.isActive) {
-        const initialCategorizedColors = globalState.getInitialCategorizedColors(); 
-        if (initialCategorizedColors) {
-            changeBackgroundColor(presetData.backgroundColors);
-        }
-        uiState.setBackgroundColors(presetData.backgroundColors);
-
+        changeColor(presetData.color, presetData.mode);
         changeAdvancedSettings(presetData.contrast, presetData.brightness, presetData.saturation);
         changeFont(presetData.font);
         changeSize(!presetData.zoomedIn);
@@ -71,8 +67,7 @@ export function resetPreset() {
         styleElement.remove();
     }
 
-    const initialBackgroundColors = globalState.getInitialBackgroundColors(); 
-    changeBackgroundColor(initialBackgroundColors);
+    resetColor(); 
     changeAdvancedSettings(100,100,100);
     changeFont(null);
     changeSize(true);
@@ -103,7 +98,8 @@ export function createPreset(presetName) {
         presetName,
         websiteURL,
         isActive,
-        backgroundColors: uiState.getBackgroundColors(),
+        color: colorEngineState.getActiveColor(),
+        mode: colorEngineState.getMode(),
         contrast: uiState.getContrast(),
         brightness: uiState.getBrightness(),
         saturation: uiState.getSaturation(),

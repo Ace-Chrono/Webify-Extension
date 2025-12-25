@@ -1,8 +1,15 @@
 const internalGlobalState = {
-    currentOrigin: null,
-    initialBackgroundColors: null,
-    initialCategorizedColors: null
+    currentOrigin: null
 };
+
+const colorEngineInternalState = {
+    activeColor: null, 
+    mode: "normal",
+    entryToBrightness: new Map(),
+    brightnessToVars: new Map(),
+    varsToColor: new Map(),
+    originalStyles: new Map()
+}
 
 const zapInternalState = {
     elements: [],
@@ -41,8 +48,25 @@ export const globalState = {
     getInitialBackgroundColors: () => internalGlobalState.initialBackgroundColors,
     setInitialBackgroundColors: (colors) => { internalGlobalState.initialBackgroundColors = colors },
 
-    getInitialCategorizedColors: () => internalGlobalState.initialCategorizedColors,
-    setInitialCategorizedColors: (colors) => { internalGlobalState.initialCategorizedColors = colors },
+    getInitialPageMode: () => internalGlobalState.initialPageMode,
+    setInitialPageMode: (initialPageMode) => { internalGlobalState.initialPageMode = initialPageMode },
+};
+
+export const colorEngineState = {
+    getActiveColor: () => colorEngineInternalState.activeColor,
+    setActiveColor: (activeColor) => { colorEngineInternalState.activeColor = activeColor },
+
+    getMode: () => colorEngineInternalState.mode,
+    setMode: (mode) => { colorEngineInternalState.mode = mode },
+
+    getEntryToBrightness: () => colorEngineInternalState.entryToBrightness,
+    setEntryToBrightness: (entryToBrightness) => { colorEngineInternalState.entryToBrightness = entryToBrightness },
+
+    getVarsToColor: () => colorEngineInternalState.varsToColor,
+    setVarsToColor: (varsToColor) => { colorEngineInternalState.varsToColor = varsToColor },
+
+    getOriginalStyles: () => colorEngineInternalState.originalStyles,
+    setOriginalStyles: (originalStyles) => { colorEngineInternalState.originalStyles = originalStyles },
 };
 
 export const zapState = {
@@ -66,9 +90,6 @@ export const zapState = {
 };
 
 export const uiState = {
-    getBackgroundColors: () => uiInternalState.backgroundColors,
-    setBackgroundColors: (colors) => { uiInternalState.backgroundColors = colors; },
-
     getFont: () => uiInternalState.font,
     setFont: (font) => { uiInternalState.font = font; },
 

@@ -1,15 +1,4 @@
-import { updatePageColors } from "./colorUtils";
 import { textElementsState, uiState } from "./state";
-
-export function changeBackgroundColor(newColors) {
-    const oldColors = uiState.getBackgroundColors();
-
-    for (let i = 0; i < newColors.length; i++) {
-        updatePageColors(oldColors[i], newColors[i]);
-    }
-
-    uiState.setBackgroundColors(newColors);
-}
 
 export function changeFont(newFont) {
     let elementsWithText = textElementsState.getTextElements();

@@ -1,30 +1,18 @@
-import { darkenColor, invertColor } from "./colorUtils";
-import { changeBackgroundColor, changeFont, changeAdvancedSettings, changeSize, changeCase, injectCSS, } from "./settings";
-import { resetPreset, addPreset, createPreset } from "./presets";
+import { changeColor, invertColor } from "./colorUtilsHelpers/colorApplication";
+import { changeFont, changeAdvancedSettings, changeSize, changeCase, injectCSS, } from "./settings";
+import { addPreset, createPreset, resetPreset } from "./presets";
 import { uiState } from "./state";
 import { zap } from "./zapMode";
 
-let newUserBackgroundColors = null;
 let loadedData = null;
 
 export function handleUserChanges() {
-    chrome.runtime.onMessage.addListener(function(message) {
+    chrome.runtime.onMessage.addListener(async function(message) {
         if (message.action === 'changeColor') {
-            newUserBackgroundColors = [
-                darkenColor(message.color, 40), 
-                darkenColor(message.color, 20), 
-                darkenColor(message.color, 0)
-            ];
-            changeBackgroundColor(newUserBackgroundColors);
+            changeColor(message.color); 
         }
         if (message.action === 'invertColor') {
-            const currentColors = uiState.getBackgroundColors();
-            newUserBackgroundColors = [
-                invertColor(currentColors[0]),
-                invertColor(currentColors[1]),
-                invertColor(currentColors[2])
-            ];
-            changeBackgroundColor(newUserBackgroundColors);
+            invertColor();
         }
         if (message.action === 'reset') {
             resetPreset();
