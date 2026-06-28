@@ -4,8 +4,7 @@
     "default_locale": "en",
     "description": "Customizing web pages to your liking",
     "manifest_version": 3,
-    "permissions": ["storage", "tabs"],
-    "host_permissions": ["http://localhost:5000/*", "https://webify-backend-hbp3.onrender.com/*"],
+    "permissions": ["storage"],
     "action": {
         "default_popup": "main.html",
         "default_icon": "assets/neuro.png"

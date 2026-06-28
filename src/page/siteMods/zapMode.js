@@ -21,6 +21,8 @@ function zapElement(event) {
         document.removeEventListener('click', zapElement);
         zapState.setZapMode(false);
         zapState.addElement({ element: event.target, displayStyle: event.target.style.display});
+
+        /*
         let identifier;
         if (event.target.id) {
             identifier = `ID: ${event.target.id}`;
@@ -29,7 +31,21 @@ function zapElement(event) {
         } else {
             identifier = `Tag: ${event.target.tagName}`;
         }
-        zapState.addID(identifier)
+        zapState.addID(identifier);
+        */
+
+        const selector = getSelector(event.target);
+        zapState.addID({
+            selector,
+            label: selector.startsWith('#')
+                ? selector
+                : event.target.tagName.toLowerCase(), 
+            fallback: {
+                tag: event.target.tagName,
+                classes: [...event.target.classList],
+                text: event.target.textContent?.trim().slice(0, 50)
+            }
+        });
         event.target.style.display = 'none';
     }
 }
@@ -64,4 +80,34 @@ function removeHighlight() {
         lastEl.style.cursor = originalStyle.cursor;
         zapState.setLastHighlighted(null);
     }
+}
+
+function getSelector(el) {
+    if (el.id) {
+        return `#${CSS.escape(el.id)}`;
+    }
+
+    const parts = [];
+
+    while (el && el.nodeType === Node.ELEMENT_NODE) {
+        let part = el.tagName.toLowerCase();
+
+        if (el.classList.length) {
+            part += '.' + [...el.classList]
+                .map(c => CSS.escape(c))
+                .join('.');
+        }
+
+        const parent = el.parentElement;
+        if (parent) {
+            const index =
+                [...parent.children].indexOf(el) + 1;
+            part += `:nth-child(${index})`;
+        }
+
+        parts.unshift(part);
+        el = el.parentElement;
+    }
+
+    return parts.join(' > ');
 }

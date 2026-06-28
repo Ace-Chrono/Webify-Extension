@@ -46,15 +46,27 @@ export function applyPreset(presetData) {
 
         for (let i = 0; i < presetData.zappedElementsID.length; i++) {
             const identifier = presetData.zappedElementsID[i];
-            if (identifier.startsWith('ID: ')) {
+
+            let el = null;
+            let selector = null;
+
+            if (typeof identifier === 'object' && identifier.selector) {
+                selector = identifier.selector;
+                el = document.querySelector(selector);
+            } else if (typeof identifier === 'string' && identifier.startsWith('ID: ')) {
                 const id = identifier.replace('ID: ', '');
-                const el = document.getElementById(id);
-                zapState.addElement({
-                    element: el,
-                    displayStyle: el.style.display
-                });
-                el.style.display = 'none'
+                selector = `#${CSS.escape(id)}`;
+                el = document.getElementById(id);
             }
+
+            if (!el) continue;
+
+            zapState.addElement({
+                selector,
+                displayStyle: el.style.display
+            });
+
+            el.style.display = 'none';
         }
 
         presetState.setApplied(true);
